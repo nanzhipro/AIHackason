@@ -10,6 +10,8 @@ import Udemy from "@src/streamings/udemy";
 import Kinopoisk from "@src/streamings/kinopoisk";
 import Amazon from "@src/streamings/amazon";
 import Inoriginal from "@src/streamings/inoriginal";
+import Bilibili from "@src/streamings/bilibili";
+import Tencent from "@src/streamings/tencent";
 
 export const getCurrentService = (): Service => {
   try {
@@ -26,6 +28,30 @@ export const getCurrentService = (): Service => {
     ) {
       document.querySelector("html")?.setAttribute("id", "youtube");
       return new Youtube();
+    }
+    
+    // Bilibili
+    if (
+      titleContent.includes("哔哩哔哩") || 
+      titleContent.includes("bilibili") || 
+      hostname === "www.bilibili.com" || 
+      hostname === "bilibili.com" ||
+      hostname.includes("bilibili")
+    ) {
+      document.querySelector("html")?.setAttribute("id", "bilibili");
+      return new Bilibili();
+    }
+    
+    // 腾讯视频
+    if (
+      titleContent.includes("腾讯视频") || 
+      titleContent.includes("Tencent Video") || 
+      hostname === "v.qq.com" || 
+      hostname.includes("qq.com") && url.includes("v.qq.com") ||
+      hostname.includes("video.qq.com")
+    ) {
+      document.querySelector("html")?.setAttribute("id", "tencent");
+      return new Tencent();
     }
     
     // Netflix

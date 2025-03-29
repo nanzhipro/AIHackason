@@ -21,6 +21,7 @@ const STYLE_OPTIONS = [
   { key: "ACADEMIC", label: "学术风" },
   { key: "MEME", label: "网络梗" },
   { key: "MOVIE", label: "影视陪伴" },
+  { key: "DUSHE", label: "毒舌" },
 ];
 
 // 弹幕风格菜单的样式

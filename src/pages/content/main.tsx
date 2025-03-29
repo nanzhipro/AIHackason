@@ -63,7 +63,8 @@ const removeStyleListener = addStyleChangeListener((newStyleKey) => {
     FUNNY: '搞笑',
     ACADEMIC: '学术风',
     MEME: '网络梗',
-    MOVIE: '影视陪伴'
+    MOVIE: '影视陪伴',
+    DUSHE: '毒舌'
   }[newStyleKey] || newStyleKey;
   
   notification.textContent = `弹幕风格已切换为: ${styleName}`;

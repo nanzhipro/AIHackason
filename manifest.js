@@ -28,6 +28,10 @@ const manifest = {
       matches: [
         "https://www.netflix.com/*",
         "https://www.youtube.com/*",
+        "https://www.bilibili.com/*",
+        "https://bilibili.com/*",
+        "https://v.qq.com/*",
+        "https://video.qq.com/*",
         "https://www.coursera.org/*",
         "https://kinopub.net/*",
         "https://kino.pub/*",
