@@ -22,6 +22,12 @@ const STYLE_OPTIONS = [
   { key: "MEME", label: "网络梗" },
   { key: "MOVIE", label: "影视陪伴" },
   { key: "DUSHE", label: "毒舌" },
+  { key: "BOSHONG", label: "霸总文学（反差萌版）" },
+  { key: "TALKSHOW", label: "脱口秀暴击（冒犯艺术版）" },
+  { key: "FENFEN", label: "发疯文学（精神状态版）" },
+  { key: "FANGYAN", label: "方言暴击（东北/川渝/粤语版）" },
+  { key: "CHUANQI", label: "抽象缝合（跨次元版）" },
+  { key: "YINYANG", label: "阴阳大师（职场版）" },
 ];
 
 // 弹幕风格菜单的样式

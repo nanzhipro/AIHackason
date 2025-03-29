@@ -64,7 +64,13 @@ const removeStyleListener = addStyleChangeListener((newStyleKey) => {
     ACADEMIC: '学术风',
     MEME: '网络梗',
     MOVIE: '影视陪伴',
-    DUSHE: '毒舌'
+    DUSHE: '毒舌',
+    BOSHONG: '霸总文学（反差萌版）',
+    TALKSHOW: '脱口秀暴击（冒犯艺术版）',
+    FENFEN: '发疯文学（精神状态版）',
+    FANGYAN: '方言暴击（东北/川渝/粤语版）',
+    CHUANQI: '抽象缝合（跨次元版）',
+    YINYANG: '阴阳大师（职场版）'
   }[newStyleKey] || newStyleKey;
   
   notification.textContent = `弹幕风格已切换为: ${styleName}`;
