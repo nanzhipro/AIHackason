@@ -37,7 +37,9 @@
     "react-select": "^5.8.0",
     "stream-browserify": "^3.0.0",
     "subtitle": "^2.0.5",
-    "webext-dynamic-content-scripts": "^10.0.4"
+    "webext-dynamic-content-scripts": "^10.0.4",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "^11.1.6",

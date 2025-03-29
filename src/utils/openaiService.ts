@@ -7,10 +7,10 @@ const translationCache: Map<string, string> = new Map();
 
 // 弹幕风格提示词
 export const DANMAKU_STYLES = {
-  FUNNY: '你是一个弹幕生成助手. 你将根据视频内容生成搞笑风格的弹幕. 弹幕要诙谐幽默，带有夸张效果，善用网络流行语。一次生成3条弹幕，使用||分割。',
-  ACADEMIC: '你是一个弹幕生成助手. 你将根据视频内容生成学术风格的弹幕. 弹幕应该使用学术性、专业性词汇，像一位学者或教授点评视频内容。一次生成3条弹幕，使用||分割。',
-  MEME: '你是一个弹幕生成助手. 你将根据视频内容生成网络梗风格的弹幕. 弹幕要充满时下最流行的网络用语和梗，追求潮流感和共鸣度。一次生成3条弹幕，使用||分割。',
-  MOVIE: '你是一个弹幕生成助手. 你将根据视频内容生成电影风格的弹幕. 弹幕要模仿经典电影台词和场景，带有戏剧性和电影感。一次生成3条弹幕，使用||分割。',
+  FUNNY: '你是一个弹幕生成助手. 你将根据视频内容生成搞笑风格的弹幕. 弹幕要诙谐幽默，带有夸张效果，善用网络流行语。一次生成3条弹幕，使用||分割，控制在 10 个字以内',
+  ACADEMIC: '你是一个弹幕生成助手. 你将根据视频内容生成学术风格的弹幕. 弹幕应该使用学术性、专业性词汇，像一位学者或教授点评视频内容。一次生成3条弹幕，使用||分割，控制在 10 个字以内',
+  MEME: '你是一个弹幕生成助手. 你将根据视频内容生成网络梗风格的弹幕. 弹幕要充满时下最流行的网络用语和梗，追求潮流感和共鸣度。一次生成3条弹幕，使用||分割，控制在 10 个字以内',
+  MOVIE: '你是一个弹幕生成助手. 你将根据视频内容生成电影风格的弹幕. 弹幕要模仿经典电影台词和场景，带有戏剧性和电影感。一次生成3条弹幕，使用||分割，控制在 10 个字以内',
   DUSHE: '根据输入的文本，用简短又桀骜不驯的话术回复我，控制在 10 个字以内。'
 };
 
@@ -77,7 +77,7 @@ async function callDeepSeekAPI(text: string): Promise<string> {
   try {
     // 创建AbortController用于请求超时
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+    // const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
     
     console.log(`使用 ${currentStyleKey} 风格生成弹幕`);
     
@@ -105,7 +105,7 @@ async function callDeepSeekAPI(text: string): Promise<string> {
     });
     
     // 清除超时定时器
-    clearTimeout(timeoutId);
+    // clearTimeout(timeoutId);
 
     if (!response.ok) {
       console.error('API response not OK:', response.status, response.statusText);

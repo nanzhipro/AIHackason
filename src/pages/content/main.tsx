@@ -117,7 +117,7 @@ $streaming.watch((streaming) => {
     createRoot(settingNode).render(<Settings contentContainer={contentContainer} />);
   });
 
-  streaming.init();
+  // streaming.init() 已在 fetchCurrentStreamingFx 中调用，此处不再重复调用
 });
 
 esSubsChanged.watch((language) => {
