@@ -1,4 +1,4 @@
-import { FC, useEffect, useState, useCallback } from "react";
+import { FC, useEffect, useState, useCallback, useRef } from "react";
 import { useUnit } from "effector-react";
 
 import { $currentSubs } from "@src/models/subs";
@@ -47,28 +47,38 @@ export const Subs: FC<TSubsProps> = () => {
   // 为弹幕功能添加的状态
   const [lastTranslation, setLastTranslation] = useState<string>('');
   const [showDanmaku, setShowDanmaku] = useState<boolean>(danmakuEnabled);
-  
+
+  // 保存上一次显示的字幕，防止在没有新字幕时清空
+  const [lastDisplayedSubs, setLastDisplayedSubs] = useState<TSub[]>([]);
+
   // 获取视频尺寸和位置信息
   const [videoRect, setVideoRect] = useState<DOMRect | null>(null);
-  
+
+  // 当有新字幕时更新lastDisplayedSubs
+  useEffect(() => {
+    if (currentSubs && currentSubs.length > 0) {
+      setLastDisplayedSubs(currentSubs);
+    }
+  }, [currentSubs]);
+
   // 监听视频元素的尺寸变化
   useEffect(() => {
     if (!video) return;
-    
+
     const updateVideoRect = () => {
       setVideoRect(video.getBoundingClientRect());
     };
-    
+
     // 初始更新
     updateVideoRect();
-    
+
     // 添加事件监听
     window.addEventListener('resize', updateVideoRect);
-    
+
     // 使用MutationObserver监听DOM变化
     const observer = new MutationObserver(updateVideoRect);
     observer.observe(document.body, { childList: true, subtree: true });
-    
+
     return () => {
       window.removeEventListener('resize', updateVideoRect);
       observer.disconnect();
@@ -91,11 +101,14 @@ export const Subs: FC<TSubsProps> = () => {
     }
   }, [showDanmaku]);
 
-  // 如果没有字幕，返回null
-  if (!currentSubs || currentSubs.length === 0) {
+  // 使用lastDisplayedSubs而不是currentSubs来决定显示内容
+  const subsToDisplay = (currentSubs && currentSubs.length > 0) ? currentSubs : lastDisplayedSubs;
+
+  // 如果没有任何可显示的字幕，返回null
+  if (!subsToDisplay || subsToDisplay.length === 0) {
     return null;
   }
-  
+
   // 隐藏处理翻译但不显示中间字幕
   const hiddenStyle = {
     position: 'absolute' as const,
@@ -113,18 +126,18 @@ export const Subs: FC<TSubsProps> = () => {
     <>
       {/* 隐藏的字幕区域，只用于处理字幕并获取翻译 */}
       <div style={hiddenStyle}>
-        {currentSubs.map((sub) => (
-          <Sub 
-            sub={sub} 
-            key={sub.text} 
+        {subsToDisplay.map((sub) => (
+          <Sub
+            sub={sub}
+            key={sub.text}
             onTranslationReceived={updateLastTranslation}
           />
         ))}
       </div>
-      
+
       {/* 弹幕容器 */}
       {danmakuEnabled && video && videoRect && (
-        <div 
+        <div
           style={{
             // position: 'fixed',
             top: videoRect.top + 'px',
@@ -139,8 +152,8 @@ export const Subs: FC<TSubsProps> = () => {
             // border: '1px solid rgba(255, 0, 0, 0.2)'
           }}
         >
-          <DanmakuContainer 
-            translation={lastTranslation} 
+          <DanmakuContainer
+            translation={lastTranslation}
             isActive={showDanmaku && !video.paused}
           />
         </div>
@@ -149,7 +162,7 @@ export const Subs: FC<TSubsProps> = () => {
   );
 };
 
-const Sub: FC<{ 
+const Sub: FC<{
   sub: TSub;
   onTranslationReceived?: (translation: string) => void;
 }> = ({ sub, onTranslationReceived }) => {
@@ -172,18 +185,18 @@ const Sub: FC<{
   // 优化的翻译函数
   const fetchTranslation = useCallback(async (text: string) => {
     if (!text.trim()) return;
-    
+
     try {
       setLoading(true);
       setError('');
       const translatedText = await translateSubtitle(text);
-      
+
       if (translatedText === '翻译出错' || translatedText.startsWith('翻译出错：')) {
         setError('翻译服务暂时不可用，请稍后再试');
         setTimeout(handleRetry, 3000); // 自动重试
       } else if (translatedText) {
         setAiTranslation(translatedText);
-        
+
         // 向父组件传递翻译结果，用于弹幕显示
         if (onTranslationReceived) {
           onTranslationReceived(translatedText);
@@ -200,11 +213,11 @@ const Sub: FC<{
   // 在组件挂载后获取翻译
   useEffect(() => {
     let isMounted = true;
-    
+
     if (sub.cleanedText) {
       fetchTranslation(sub.cleanedText);
     }
-    
+
     return () => {
       isMounted = false;
     };
